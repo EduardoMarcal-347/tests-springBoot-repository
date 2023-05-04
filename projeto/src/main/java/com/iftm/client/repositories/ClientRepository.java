@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query(value = "SELECT c FROM Client c WHERE c.income BETWEEN :value and :secondValue")
     public List<Client> findByIncomeInterval(Double value, Double secondValue);
 
+    public List<Client> findClientBybirthDateBetween(Instant DataInicio, Instant DataTermino);
 
 
 }
