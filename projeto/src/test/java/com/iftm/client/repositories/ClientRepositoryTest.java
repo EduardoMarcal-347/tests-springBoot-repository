@@ -67,7 +67,15 @@ public class ClientRepositoryTest {
         Assertions.assertThat(resultado).isNotEmpty();
         Assertions.assertThat(resultado.get().getId()).isEqualTo(idEsperado);
     }
-    
 
+    @Test
+    @DisplayName("Veificar se método retorna o cliente com nome não existente")
+    public void testarBuscarPorNomeNãoExistente() {
+        String nomeBuscado = "Eduardo Marçal";
+
+        Optional<Client> resultado = repositorio.findByName(nomeBuscado);
+
+        Assertions.assertThat(resultado).isEmpty();
+    }
 
 }
