@@ -149,7 +149,23 @@ public class ClientRepositoryTest {
         Assertions.assertThat(listaResultado.get(2).getIncome()).isEqualTo(salarioEsperado);
     }
 
-    
+    @Test
+    @DisplayName("Testar o método que busca clientes com salários que esteja no intervalo entre\n" +
+            "dois valores informados.")
+    public void testarBuscarSalarioPorIntervalo() {
+        Double salarioInicioIntervalo = 2500.0;
+        Double salarioFimIntervalo = 4000.0;
+
+        List<Client> listaResultado = repositorio.findByIncomeInterval(salarioInicioIntervalo, salarioFimIntervalo);
+
+        Assertions.assertThat(listaResultado.size()).isEqualTo(4);
+        Assertions.assertThat(listaResultado.get(0).getIncome()).isEqualTo(2500.0);
+        Assertions.assertThat(listaResultado.get(1).getIncome()).isEqualTo(3800.0);
+        Assertions.assertThat(listaResultado.get(2).getIncome()).isEqualTo(2500.0);
+        Assertions.assertThat(listaResultado.get(3).getIncome()).isEqualTo(2500.0);
+    }
+
+
 
 
 }
