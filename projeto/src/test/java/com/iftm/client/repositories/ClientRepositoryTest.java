@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -165,7 +166,18 @@ public class ClientRepositoryTest {
         Assertions.assertThat(listaResultado.get(3).getIncome()).isEqualTo(2500.0);
     }
 
+    @Test
+    @DisplayName("Testar o método que retorna vários cliente baseado na sua data de aniversário")
+    public void testarBuscarPorDataAniversario() {
+        Instant dataInicio = Instant.parse("2017-12-25T20:30:50Z");
+        Instant dataFim = Instant.now();
+        Instant dataNascimentoEsperada = Instant.parse("2020-07-13T20:50:00Z");
 
+        List<Client> listaResultado = repositorio.findClientBybirthDateBetween(dataInicio, dataFim);
+
+        Assertions.assertThat(listaResultado.size()).isEqualTo(1);
+        Assertions.assertThat(listaResultado.get(0).getBirthDate()).isEqualTo(dataNascimentoEsperada);
+    }
 
 
 }
