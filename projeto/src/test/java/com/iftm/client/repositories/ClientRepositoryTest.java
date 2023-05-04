@@ -134,6 +134,21 @@ public class ClientRepositoryTest {
         Assertions.assertThat(listaResultado.get(0).getIncome()).isEqualTo(primeiroSalarioEsperado);
         Assertions.assertThat(listaResultado.get(1).getIncome()).isEqualTo(segundoSalarioEsperado);
     }
+
+    @Test
+    @DisplayName("Testar o método que busca clientes com salários inferiores a um valor")
+    public void testarBuscarPorSalarioMenorQue() {
+        Double salarioBuscado = 2500.0;
+        Double salarioEsperado = 1500.0;
+
+        List<Client> listaResultado = repositorio.findByIncomeSmallerThan(salarioBuscado);
+
+        Assertions.assertThat(listaResultado.size()).isEqualTo(3);
+        Assertions.assertThat(listaResultado.get(0).getIncome()).isEqualTo(salarioEsperado);
+        Assertions.assertThat(listaResultado.get(1).getIncome()).isEqualTo(salarioEsperado);
+        Assertions.assertThat(listaResultado.get(2).getIncome()).isEqualTo(salarioEsperado);
+    }
+
     
 
 
