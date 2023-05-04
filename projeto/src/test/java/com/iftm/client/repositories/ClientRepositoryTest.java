@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @DataJpaTest
@@ -77,5 +79,27 @@ public class ClientRepositoryTest {
 
         Assertions.assertThat(resultado).isEmpty();
     }
+
+    @Test
+    @DisplayName("Testar o método que retorna vários cliente com parte do nome similar ao texto\n" +
+            "informado")
+    public void testarBuscarPorNomeSimilar() {
+        String textoBuscado = "ama";
+        // Jose Saramago
+        long primeiroIdEsperado = 7;
+        // Chimamanda Adichie
+        long segundoIdEsperado = 10;
+        // Jorge Amado
+        long terceiroIdEsperado = 12;
+
+        List<Client> listaResultado = repositorio.findByNameContains(textoBuscado);
+
+        Assertions.assertThat(listaResultado.size()).isEqualTo(3);
+        Assertions.assertThat(listaResultado.get(0).getId()).isEqualTo(primeiroIdEsperado);
+        Assertions.assertThat(listaResultado.get(1).getId()).isEqualTo(segundoIdEsperado);
+        Assertions.assertThat(listaResultado.get(2).getId()).isEqualTo(terceiroIdEsperado);
+    }
+
+    
 
 }

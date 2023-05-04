@@ -18,7 +18,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     public Optional<Client> findByName(String name);
 
     @Query(value = "SELECT c FROM Client c WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%'))")
-    public Optional<Client> findByNameContains(String name);
+    public List<Client> findByNameContains(String name);
 
     @Query(value = "SELECT c FROM Client c WHERE c.income > :value")
     public List<Client> findByIncomeBiggerThan(Double value);
