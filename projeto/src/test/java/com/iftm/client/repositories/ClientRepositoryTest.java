@@ -100,6 +100,25 @@ public class ClientRepositoryTest {
         Assertions.assertThat(listaResultado.get(2).getId()).isEqualTo(terceiroIdEsperado);
     }
 
-    
+    @Test
+    @DisplayName("Testar metodo que busca por nome similar passando um nome não existente")
+    public void testarBuscarPorNomeSimilarNaoExistente() {
+        String textoBuscado = "Marcal";
+
+        List<Client> listaResultado = repositorio.findByNameContains(textoBuscado);
+
+        Assertions.assertThat(listaResultado).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Testar o método que retorna vários cliente com parte do nome similar passando como\n" +
+            "parametro um texto vazio (Neste caso teria que retornar todos os clientes)")
+    public void testarBuscarPorNomeSimilarParametroVazio() {
+        String textoVazio = "";
+
+        List<Client> listaResultado = repositorio.findByNameContains(textoVazio);
+
+        Assertions.assertThat(listaResultado.size()).isEqualTo(12);
+    }
 
 }
