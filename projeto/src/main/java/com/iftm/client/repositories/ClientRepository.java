@@ -28,7 +28,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query(value = "SELECT c FROM Client c WHERE c.income BETWEEN :value and :secondValue")
     public List<Client> findByIncomeInterval(Double value, Double secondValue);
 
-    public List<Client> findClientBybirthDateBetween(Instant DataInicio, Instant DataTermino);
+    public List<Client> findClientBybirthDateBetween(Instant dataInicio, Instant dataTermino);
 
 
 }

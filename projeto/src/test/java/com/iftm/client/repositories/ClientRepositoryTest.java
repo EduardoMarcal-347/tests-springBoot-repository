@@ -42,7 +42,7 @@ public class ClientRepositoryTest {
 
     @Test
     @DisplayName("Verificar se a exclusão realmente apaga um registro existente.")
-    public void TestarExcluirPorIdApagaRegistroExistente() {
+    public void testarExcluirPorIdApagaRegistroExistente() {
         long idBuscado = 8;
         long quantidadeRegistrosEsperado = 11;
 
@@ -55,5 +55,19 @@ public class ClientRepositoryTest {
         //assertEquals(quantidadeRegistrosEsperado, repositorio.count());
 
     }
+
+    @Test
+    @DisplayName("Verificar se método retorna o cliente com nome existente")
+    public void testarBuscarPorNomeExistente() {
+        String nomeBuscado = "Conceição Evaristo";
+        long idEsperado = 1;
+
+        Optional<Client> resultado = repositorio.findByName(nomeBuscado);
+
+        Assertions.assertThat(resultado).isNotEmpty();
+        Assertions.assertThat(resultado.get().getId()).isEqualTo(idEsperado);
+    }
+    
+
 
 }
