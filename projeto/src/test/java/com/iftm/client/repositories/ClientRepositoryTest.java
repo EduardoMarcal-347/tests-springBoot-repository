@@ -179,5 +179,27 @@ public class ClientRepositoryTest {
         Assertions.assertThat(listaResultado.get(0).getBirthDate()).isEqualTo(dataNascimentoEsperada);
     }
 
+    @Test
+    @DisplayName("Testar o metodo que realiza update no ClientRepository")
+    public void testarSaveClient() {
+        String nomeEsperado = "Fernanda Oliveira";
+        Double salarioEsperado = 2500.0;
+        Instant dataAniversarioEsperada = Instant.parse("2002-08-11T20:50:00Z");
+
+        Optional<Client> resultadoClient = repositorio.findById(1L);
+        if (resultadoClient.isPresent()){
+            Client client = resultadoClient.get();
+            client.setName(nomeEsperado);
+            client.setBirthDate(dataAniversarioEsperada);
+            client.setIncome(salarioEsperado);
+            repositorio.save(client);
+        }
+
+        Assertions.assertThat(repositorio.findById(1L).get().getName()).isEqualTo(nomeEsperado);
+        Assertions.assertThat(repositorio.findById(1L).get().getIncome()).isEqualTo(salarioEsperado);
+        Assertions.assertThat(repositorio.findById(1L).get().getBirthDate()).isEqualTo(dataAniversarioEsperada);
+    }
+
+
 
 }
