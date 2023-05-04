@@ -121,4 +121,20 @@ public class ClientRepositoryTest {
         Assertions.assertThat(listaResultado.size()).isEqualTo(12);
     }
 
+    @Test
+    @DisplayName("Testar o método que busca clientes com salários superiores a um valor")
+    public void testarBuscarPorSalarioMaiorQue() {
+        Double salarioBuscado = 7000.0;
+        Double primeiroSalarioEsperado = 7500.0;
+        Double segundoSalarioEsperado = 10000.0;
+
+        List<Client> listaResultado = repositorio.findByIncomeBiggerThan(salarioBuscado);
+
+        Assertions.assertThat(listaResultado.size()).isEqualTo(2);
+        Assertions.assertThat(listaResultado.get(0).getIncome()).isEqualTo(primeiroSalarioEsperado);
+        Assertions.assertThat(listaResultado.get(1).getIncome()).isEqualTo(segundoSalarioEsperado);
+    }
+    
+
+
 }
