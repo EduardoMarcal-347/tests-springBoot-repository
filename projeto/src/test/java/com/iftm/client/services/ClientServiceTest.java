@@ -37,8 +37,9 @@ public class ClientServiceTest {
     public void testeDeleteIdExistente(){
         Long id = 1L;
 
-        service.delete(id);
+        Mockito.doNothing().when(repository).deleteById(id);
 
+        Assertions.assertDoesNotThrow(() -> service.delete(id));
         Mockito.verify(repository, times(1)).deleteById(id);
     }
 
@@ -113,7 +114,7 @@ public class ClientServiceTest {
     @DisplayName("Testa metodo findById quando id for Inexistente")
     public void testeFindByIdInexistente() {
         Long id = 1L;
-
+    
         Mockito.doThrow(ResourceNotFoundException.class).when(repository).findById(id);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> service.findById(id));
