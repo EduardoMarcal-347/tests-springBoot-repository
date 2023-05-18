@@ -129,7 +129,7 @@ public class ClientServiceTest {
         ClientDTO clientDto = new ClientDTO(id,"Fulano da Silva de souza", "123", 2500D, Instant.now(),2);
 
         Mockito.when(repository.getOne(id)).thenReturn(client);
-        Mockito.when(repository.save(client)).thenReturn(clientDto.toEntity());
+        Mockito.when(repository.save(client)).thenReturn(client);
         ClientDTO resultado = service.update(id, clientDto);
 
         Assertions.assertEquals(ClientDTO.class, resultado.getClass());
@@ -147,8 +147,18 @@ public class ClientServiceTest {
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> service.update(id, new ClientDTO()));
     }
+
+    @Test
+    @DisplayName("Testa metodo insert que deve retornar um ClientDTO ao inserir um novo cliente")
+    public void testeInsert(){
+        ClientDTO clientASerInserido  = new ClientDTO(39L,"Fulano da Silva", "123", 2000D, Instant.now(),1);
+        Client client = clientASerInserido.toEntity();
+
+        Mockito.when(repository.save(client)).thenReturn(client);
+        ClientDTO resultado = service.insert(clientASerInserido);
+
+        Assertions.assertEquals(ClientDTO.class, resultado.getClass());
+        Assertions.assertEquals(clientASerInserido.getId(), resultado.getId());
+    }
     
-
-
-
 }
