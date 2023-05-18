@@ -11,11 +11,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.Instant;
@@ -160,5 +158,5 @@ public class ClientServiceTest {
         Assertions.assertEquals(ClientDTO.class, resultado.getClass());
         Assertions.assertEquals(clientASerInserido.getId(), resultado.getId());
     }
-    
+
 }
