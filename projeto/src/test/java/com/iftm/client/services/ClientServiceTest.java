@@ -75,8 +75,6 @@ public class ClientServiceTest {
 
     }
 
-    //    findByIncome deveria retornar uma página com os clientes que tenham o Income
-//    informado (e chamar o método findByIncome do repository)
     @Test
     @DisplayName("Testa metodo findByIncome que deve retornar uma pagina com os clientes que tenham o income" +
             "maior que o passado como parametro")
@@ -97,6 +95,34 @@ public class ClientServiceTest {
         Assertions.assertTrue(resultado.getContent().get(1).getIncome()>1500);
     }
 
+
+    @Test
+    @DisplayName("Testa metodo findById quando id for existente")
+    public void testeFindByIdExistente() {
+        Long id = 1L;
+        Client client = new Client(id,"Fulano da Silva", "123", 2000D, Instant.now(),1);
+
+        Mockito.when(repository.findById(id)).thenReturn(Optional.of(client));
+        ClientDTO resultado = service.findById(id);
+
+        Assertions.assertNotNull(resultado);
+        Assertions.assertEquals(id, resultado.getId());
+
+    }
+
+//◦ lançar ResourceNotFoundException quando o id não existir
+
+    @Test
+    @DisplayName("Testa metodo findById quando id for Inexistente")
+    public void testeFindByIdInexistente() {
+        Long id = 1L;
+
+        Mockito.doThrow(ResourceNotFoundException.class).when(repository).findById(id);
+
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> service.findById(id));
+    }
     
+
+
 
 }
