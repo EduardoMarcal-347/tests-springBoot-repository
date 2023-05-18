@@ -51,6 +51,7 @@ public class ClientServiceTest {
         Mockito.doThrow(ResourceNotFoundException.class).when(repository).deleteById(id);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> service.delete(id));
+        Mockito.verify(repository , times(1)).deleteById(id);
     }
 
     @Test
@@ -67,11 +68,12 @@ public class ClientServiceTest {
         Mockito.when(repository.findAll(pageRequest)).thenReturn(page);
         Page<ClientDTO> resultado = service.findAllPaged(pageRequest);
 
+        Assertions.assertNotNull(resultado);
         Assertions.assertEquals(clientes.size(), resultado.getSize());
         Assertions.assertEquals(clientes.get(0).getId(), resultado.getContent().get(0).getId());
         Assertions.assertEquals(clientes.get(1).getId(), resultado.getContent().get(1).getId());
         Assertions.assertEquals(clientes.get(2).getId(), resultado.getContent().get(2).getId());
-
+        Mockito.verify(repository , times(1)).findAll(pageRequest);
     }
 
     @Test
@@ -92,6 +94,8 @@ public class ClientServiceTest {
         Assertions.assertEquals(tamanhoEsperado, resultado.getContent().size());
         Assertions.assertTrue(resultado.getContent().get(0).getIncome()>1500);
         Assertions.assertTrue(resultado.getContent().get(1).getIncome()>1500);
+        Mockito.verify(repository , times(1))
+                .findByIncomeGreaterThan(1500D, pageRequest);
     }
 
 
@@ -106,6 +110,7 @@ public class ClientServiceTest {
 
         Assertions.assertNotNull(resultado);
         Assertions.assertEquals(id, resultado.getId());
+        Mockito.verify(repository , times(1)).findById(id);
     }
 
 //◦ lançar ResourceNotFoundException quando o id não existir
@@ -114,10 +119,11 @@ public class ClientServiceTest {
     @DisplayName("Testa metodo findById quando id for Inexistente")
     public void testeFindByIdInexistente() {
         Long id = 1L;
-    
+
         Mockito.doThrow(ResourceNotFoundException.class).when(repository).findById(id);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> service.findById(id));
+        Mockito.verify(repository , times(1)).findById(id);
     }
 
     @Test
@@ -129,12 +135,16 @@ public class ClientServiceTest {
 
         Mockito.when(repository.getOne(id)).thenReturn(client);
         Mockito.when(repository.save(client)).thenReturn(client);
+
+        //clientDto ira atualizar o client cujo id é o mesmo
         ClientDTO resultado = service.update(id, clientDto);
 
         Assertions.assertEquals(ClientDTO.class, resultado.getClass());
         Assertions.assertEquals(clientDto.getId(), resultado.getId());
         Assertions.assertEquals(clientDto.getName(), resultado.getName());
         Assertions.assertEquals(clientDto.getIncome(), resultado.getIncome());
+        Mockito.verify(repository , times(1)).getOne(id);
+        Mockito.verify(repository , times(1)).save(client);
     }
 
     @Test
@@ -145,6 +155,7 @@ public class ClientServiceTest {
         Mockito.doThrow(ResourceNotFoundException.class).when(repository).getOne(id);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> service.update(id, new ClientDTO()));
+        Mockito.verify(repository , times(1)).getOne(id);
     }
 
     @Test
@@ -158,6 +169,7 @@ public class ClientServiceTest {
 
         Assertions.assertEquals(ClientDTO.class, resultado.getClass());
         Assertions.assertEquals(clientASerInserido.getId(), resultado.getId());
+        Mockito.verify(repository , times(1)).save(client);
     }
 
 }
