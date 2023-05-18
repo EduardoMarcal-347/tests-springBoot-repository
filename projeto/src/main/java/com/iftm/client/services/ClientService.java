@@ -36,7 +36,13 @@ public class ClientService {
 		Client entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 		return new ClientDTO(entity);
 	}
-	
+
+	@Transactional(readOnly = true)
+	public Page<ClientDTO> findByIncomeGreaterThan(PageRequest pageRequest, double income) {
+		Page<Client> list = repository.findByIncomeGreaterThan(income, pageRequest);
+		return list.map(x -> new ClientDTO(x));
+	}
+
 	@Transactional
 	public ClientDTO insert(ClientDTO dto) {
 		Client entity = dto.toEntity();

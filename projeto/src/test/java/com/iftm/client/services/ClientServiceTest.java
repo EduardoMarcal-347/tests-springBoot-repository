@@ -71,7 +71,7 @@ public class ClientServiceTest {
         Assertions.assertEquals(clientes.get(0).getId(), resultado.getContent().get(0).getId());
         Assertions.assertEquals(clientes.get(1).getId(), resultado.getContent().get(1).getId());
         Assertions.assertEquals(clientes.get(2).getId(), resultado.getContent().get(2).getId());
-        
-    }
 
+    }
+    
 }

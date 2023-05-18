@@ -1,6 +1,8 @@
 package com.iftm.client.repositories;
 
 import com.iftm.client.entities.Client;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -20,8 +22,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query(value = "SELECT c FROM Client c WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%'))")
     public List<Client> findByNameContains(String name);
 
-    @Query(value = "SELECT c FROM Client c WHERE c.income > :value")
-    public List<Client> findByIncomeBiggerThan(Double value);
+    Page<Client> findByIncomeGreaterThan(double salarioI, Pageable pageable);
 
     @Query(value = "SELECT c FROM Client c WHERE c.income < :value")
     public List<Client> findByIncomeSmallerThan(Double value);
