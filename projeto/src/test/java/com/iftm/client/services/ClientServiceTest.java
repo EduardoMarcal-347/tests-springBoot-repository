@@ -15,6 +15,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.Instant;
@@ -73,5 +74,29 @@ public class ClientServiceTest {
         Assertions.assertEquals(clientes.get(2).getId(), resultado.getContent().get(2).getId());
 
     }
+
+    //    findByIncome deveria retornar uma página com os clientes que tenham o Income
+//    informado (e chamar o método findByIncome do repository)
+    @Test
+    @DisplayName("Testa metodo findByIncome que deve retornar uma pagina com os clientes que tenham o income" +
+            "maior que o passado como parametro")
+    public void testeFindByIncomeGreaterThan(){
+        List<Client> clientes = new ArrayList<>(Arrays.asList(
+                new Client(2L,"Maria", "321", 5080D, Instant.now(), 1),
+                new Client(3L,"Fulana", "007", 2030D, Instant.now(), 0)
+        ));
+        PageRequest pageRequest = PageRequest.of(0, clientes.size());
+        Page<Client> page = new PageImpl<>(clientes);
+        int tamanhoEsperado = 2;
+
+        Mockito.when(repository.findByIncomeGreaterThan(1500D, pageRequest)).thenReturn(page);
+        Page<ClientDTO> resultado = service.findByIncomeGreaterThan(pageRequest,1500D);
+
+        Assertions.assertEquals(tamanhoEsperado, resultado.getContent().size());
+        Assertions.assertTrue(resultado.getContent().get(0).getIncome()>1500);
+        Assertions.assertTrue(resultado.getContent().get(1).getIncome()>1500);
+    }
+
     
+
 }
