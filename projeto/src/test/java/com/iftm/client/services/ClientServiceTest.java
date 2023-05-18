@@ -107,7 +107,6 @@ public class ClientServiceTest {
 
         Assertions.assertNotNull(resultado);
         Assertions.assertEquals(id, resultado.getId());
-
     }
 
 //◦ lançar ResourceNotFoundException quando o id não existir
@@ -120,6 +119,33 @@ public class ClientServiceTest {
         Mockito.doThrow(ResourceNotFoundException.class).when(repository).findById(id);
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> service.findById(id));
+    }
+
+    @Test
+    @DisplayName("Testa metodo update quando id for Existente")
+    public void testeUpdateIdExistente() {
+        Long id = 1L;
+        Client client = new Client(id,"Fulano da Silva", "123", 2000D, Instant.now(),1);
+        ClientDTO clientDto = new ClientDTO(id,"Fulano da Silva de souza", "123", 2500D, Instant.now(),2);
+
+        Mockito.when(repository.getOne(id)).thenReturn(client);
+        Mockito.when(repository.save(client)).thenReturn(clientDto.toEntity());
+        ClientDTO resultado = service.update(id, clientDto);
+
+        Assertions.assertEquals(ClientDTO.class, resultado.getClass());
+        Assertions.assertEquals(clientDto.getId(), resultado.getId());
+        Assertions.assertEquals(clientDto.getName(), resultado.getName());
+        Assertions.assertEquals(clientDto.getIncome(), resultado.getIncome());
+    }
+
+    @Test
+    @DisplayName("Testa metodo update quando id for Inexistente")
+    public void testeUpdateIdInexistente() {
+        Long id = 1121212L;
+
+        Mockito.doThrow(ResourceNotFoundException.class).when(repository).getOne(id);
+
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> service.update(id, new ClientDTO()));
     }
     
 
